@@ -2,6 +2,8 @@ package bilibili.majiang.community.controller;
 
 import bilibili.majiang.community.dto.AccessToken;
 import bilibili.majiang.community.dto.GithubUser;
+import bilibili.majiang.community.mapper.UserMapper;
+import bilibili.majiang.community.model.User;
 import bilibili.majiang.community.provider.GithubProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,12 +12,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.UUID;
 
 @Controller
 public class AuthorizeController {
 
     @Autowired
     private GithubProvider githubProvider;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Value("${github.client.id}")
     private String client_id;
@@ -40,6 +46,13 @@ public class AuthorizeController {
         GithubUser githubUser = githubProvider.getGithubUser(tokenString);
         if(null != githubUser){
             httpServletRequest.getSession().setAttribute("githubUser", githubUser);
+            User user = new User();
+            user.setAccountId(String.valueOf(githubUser.getId()));
+            user.setGmtCreated(System.currentTimeMillis());
+            user.setGmtModified(user.getGmtCreated());
+            user.setName(githubUser.getName());
+            user.setToken(String.valueOf(UUID.randomUUID()));
+            userMapper.insert(user);
             return "redirect:/";
         }else{
             return "redirect:/";
