@@ -8,6 +8,7 @@ import bilibili.majiang.community.provider.GithubProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -47,6 +48,8 @@ public class AuthorizeController {
         //使用返回的 access_token 获取 用户信息
         GithubUser githubUser = githubProvider.getGithubUser(tokenString);
         if(0 != githubUser.getId()){
+            if(0 != userMapper.findByAccountId(githubUser.getId()))
+                return "/";
             User user = new User();
             user.setAccountId(String.valueOf(githubUser.getId()));
             user.setAvatarUrl(githubUser.getAvatarUrl());
