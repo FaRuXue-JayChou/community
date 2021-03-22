@@ -49,6 +49,7 @@ public class AuthorizeController {
         if(0 != githubUser.getId()){
             User user = new User();
             user.setAccountId(String.valueOf(githubUser.getId()));
+            user.setAvatarUrl(githubUser.getAvatarUrl());
             user.setGmtCreated(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreated());
             user.setName(githubUser.getName());
