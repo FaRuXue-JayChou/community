@@ -3,7 +3,7 @@ package bilibili.majiang.community.dto;
 import lombok.Data;
 
 @Data
-public class GithubUser {
+public class GithubUserInfo {
 
     private long id;
     private String name;

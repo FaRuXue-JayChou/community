@@ -2,7 +2,7 @@ package bilibili.majiang.community.controller;
 
 import bilibili.majiang.community.mapper.QuestionMapper;
 import bilibili.majiang.community.model.Question;
-import bilibili.majiang.community.model.User;
+import bilibili.majiang.community.model.GithubUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -59,8 +59,8 @@ public class PublishController {
         question.setGmtCreated(System.currentTimeMillis());
         question.setGmtModified(question.getGmtCreated());
         //通过 session 获取用户属性
-        User user = (User)httpServletRequest.getSession().getAttribute("user");
-        question.setCreator(user.getId());
+        GithubUser githubUser = (GithubUser)httpServletRequest.getSession().getAttribute("githubUser");
+        question.setCreator(githubUser.getId());
         questionMapper.create(question);
         return "index";
     }

@@ -1,6 +1,6 @@
 package bilibili.majiang.community.mapper;
 
-import bilibili.majiang.community.model.User;
+import bilibili.majiang.community.model.GithubUser;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -17,17 +17,17 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface UserMapper {
 
-    @Insert("insert into user(ACCOUNT_ID, NAME, TOKEN, GMT_CREATED, GMT_MODIFIED, AVATAR_URL)" +
+    @Insert("insert into githubUser(ACCOUNT_ID, NAME, TOKEN, GMT_CREATED, GMT_MODIFIED, AVATAR_URL)" +
             "values(#{accountId}, #{name}, #{token}, #{gmtCreated}, #{gmtModified}, #{avatarUrl})")
-    void insert(User user);
+    void insert(GithubUser githubUser);
 
-    @Select("select * from user where token = #{token}")
-    User findByToken(@Param("token") String token);
+    @Select("select * from githubUser where token = #{token}")
+    GithubUser findByToken(@Param("token") String token);
 
-    @Select("select count(*) from user where ACCOUNT_ID = #{accountId}")
+    @Select("select count(*) from githubUser where ACCOUNT_ID = #{accountId}")
     Integer findByAccountId(@Param("accountId") Long accountId);
 
-    @Select("select * from user where id = #{id}")
-    User findById(@Param("id") Integer id);
+    @Select("select * from githubUser where id = #{id}")
+    GithubUser findById(@Param("id") Integer id);
 
 }

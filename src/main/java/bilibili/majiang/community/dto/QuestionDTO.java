@@ -1,6 +1,6 @@
 package bilibili.majiang.community.dto;
 
-import bilibili.majiang.community.model.User;
+import bilibili.majiang.community.model.GithubUser;
 import lombok.Data;
 
 /**
@@ -22,6 +22,6 @@ public class QuestionDTO {
     private Integer viewCount;
     private Integer likeCount;
     private String tag;
-    private User user;
+    private GithubUser githubUser;
 
 }

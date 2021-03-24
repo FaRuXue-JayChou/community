@@ -4,7 +4,7 @@ import bilibili.majiang.community.dto.QuestionDTO;
 import bilibili.majiang.community.mapper.QuestionMapper;
 import bilibili.majiang.community.mapper.UserMapper;
 import bilibili.majiang.community.model.Question;
-import bilibili.majiang.community.model.User;
+import bilibili.majiang.community.model.GithubUser;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,8 +34,8 @@ public class QuestionService {
         for(Question question: questionList){
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question, questionDTO);
-            User user = userMapper.findById(question.getCreator());
-            questionDTO.setUser(user);
+            GithubUser githubUser = userMapper.findById(question.getCreator());
+            questionDTO.setGithubUser(githubUser);
             questionDTOList.add(questionDTO);
         }
         return questionDTOList;
