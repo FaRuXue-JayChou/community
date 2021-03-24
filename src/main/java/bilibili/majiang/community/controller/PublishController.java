@@ -62,7 +62,7 @@ public class PublishController {
         User user = (User)httpServletRequest.getSession().getAttribute("user");
         question.setCreator(user.getId());
         questionMapper.create(question);
-        return "publish";
+        return "index";
     }
 
 }
