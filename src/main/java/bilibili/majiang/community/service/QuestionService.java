@@ -2,7 +2,7 @@ package bilibili.majiang.community.service;
 
 import bilibili.majiang.community.dto.QuestionDTO;
 import bilibili.majiang.community.mapper.QuestionMapper;
-import bilibili.majiang.community.mapper.UserMapper;
+import bilibili.majiang.community.mapper.GithubUserMapper;
 import bilibili.majiang.community.model.Question;
 import bilibili.majiang.community.model.GithubUser;
 import org.springframework.beans.BeanUtils;
@@ -23,7 +23,7 @@ import java.util.List;
 public class QuestionService {
 
     @Autowired
-    private UserMapper userMapper;
+    private GithubUserMapper githubUserMapper;
 
     @Autowired
     private QuestionMapper questionMapper;
@@ -34,7 +34,7 @@ public class QuestionService {
         for(Question question: questionList){
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question, questionDTO);
-            GithubUser githubUser = userMapper.findById(question.getCreator());
+            GithubUser githubUser = githubUserMapper.findById(question.getCreator());
             questionDTO.setGithubUser(githubUser);
             questionDTOList.add(questionDTO);
         }

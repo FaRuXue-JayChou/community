@@ -2,7 +2,7 @@ package bilibili.majiang.community.controller;
 
 import bilibili.majiang.community.dto.ForGithubToken;
 import bilibili.majiang.community.dto.GithubUserInfo;
-import bilibili.majiang.community.mapper.UserMapper;
+import bilibili.majiang.community.mapper.GithubUserMapper;
 import bilibili.majiang.community.model.GithubUser;
 import bilibili.majiang.community.provider.GithubProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +16,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 @Controller
-public class AuthorizeController {
+public class GithubAuthorizeController {
 
     @Autowired
     private GithubProvider githubProvider;
 
     @Autowired
-    private UserMapper userMapper;
+    private GithubUserMapper githubUserMapper;
 
     @Value("${github.client.id}")
     private String client_id;
@@ -46,7 +46,7 @@ public class AuthorizeController {
         //使用返回的 access_token 获取 用户信息
         GithubUserInfo githubUserInfo = githubProvider.getGithubUser(tokenString);
         if(0 != githubUserInfo.getId()){
-            if(0 != userMapper.findByAccountId(githubUserInfo.getId()))
+            if(0 != githubUserMapper.findByAccountId(githubUserInfo.getId()))
                 return "/";
             GithubUser githubUser = new GithubUser();
             githubUser.setAccountId(String.valueOf(githubUserInfo.getId()));
@@ -55,7 +55,7 @@ public class AuthorizeController {
             githubUser.setGmtModified(githubUser.getGmtCreated());
             githubUser.setName(githubUserInfo.getName());
             githubUser.setToken(String.valueOf(UUID.randomUUID()));
-            userMapper.insert(githubUser);
+            githubUserMapper.insert(githubUser);
             httpServletResponse.addCookie(new Cookie("token", githubUser.getToken()));
             return "redirect:/";
         }else{

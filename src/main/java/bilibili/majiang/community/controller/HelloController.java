@@ -1,7 +1,7 @@
 package bilibili.majiang.community.controller;
 
 import bilibili.majiang.community.dto.QuestionDTO;
-import bilibili.majiang.community.mapper.UserMapper;
+import bilibili.majiang.community.mapper.GithubUserMapper;
 import bilibili.majiang.community.model.GithubUser;
 import bilibili.majiang.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import java.util.List;
 public class HelloController {
 
     @Autowired
-    private UserMapper userMapper;
+    private GithubUserMapper githubUserMapper;
 
     @Autowired
     private QuestionService questionService;
@@ -29,7 +29,7 @@ public class HelloController {
         if(null != cookies && 0 < cookies.length){
             for(Cookie cookie: cookies){
                 if("token".equals(cookie.getName())){
-                    GithubUser githubUser = userMapper.findByToken(cookie.getValue());
+                    GithubUser githubUser = githubUserMapper.findByToken(cookie.getValue());
                     if(0 != githubUser.getId())
                         httpServletRequest.getSession().setAttribute("user", githubUser);
                     break;

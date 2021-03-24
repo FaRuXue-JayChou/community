@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 /**
- * @InterfaceName UserMapper
+ * @InterfaceName GithubUserMapper
  * @Description TODO
  * @Author 90855
  * @Date 2021/3/13 17:54
@@ -15,7 +15,7 @@ import org.apache.ibatis.annotations.Select;
  */
 
 @Mapper
-public interface UserMapper {
+public interface GithubUserMapper {
 
     @Insert("insert into githubUser(ACCOUNT_ID, NAME, TOKEN, GMT_CREATED, GMT_MODIFIED, AVATAR_URL)" +
             "values(#{accountId}, #{name}, #{token}, #{gmtCreated}, #{gmtModified}, #{avatarUrl})")
