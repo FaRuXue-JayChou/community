@@ -20,7 +20,7 @@
                     data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                 <span class="sr-only">社区</span>
             </button>
-            <a class="navbar-brand" href="#">社区</a>
+            <a class="navbar-brand" href="/">社区</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -74,7 +74,7 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-xs-12 col-sm-12 col-lg-9">
-                                <span th:if="${null != error}" th:text="${error}"></span>
+                                <span class="bg-danger" th:if="${null != error}" th:text="${error}"></span>
                             </div>
                             <div class="col-xs-12 col-sm-12 col-lg-3">
                                 <button type="submit" class="btn btn-success btn-publish">发布</button>

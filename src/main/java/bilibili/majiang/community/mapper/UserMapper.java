@@ -27,4 +27,7 @@ public interface UserMapper {
     @Select("select count(*) from user where ACCOUNT_ID = #{accountId}")
     Integer findByAccountId(@Param("accountId") Long accountId);
 
+    @Select("select * from user where id = #{id}")
+    User findById(@Param("id") Integer id);
+
 }
