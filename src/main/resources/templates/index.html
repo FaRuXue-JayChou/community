@@ -35,6 +35,9 @@
                 <li th:if="${null == session.githubUser}"><a
                         href="https://github.com/login/oauth/authorize?client_id=b8eeca538ba2ccd88770&redirect_uri=http://localhost:8080/callback&scope=githubUser&state=1">登录</a>
                 </li>
+                <li th:if="${null == session.wechatUser}"><a
+                        href="https://open.weixin.qq.com/connect/qrconnect?appid=   &redirect_uri=http://localhost:8080/wechatCallback&response_type=code&scope=snsapi_login&state=2">微信登录</a>
+                </li>
                 <li th:if="${null != session.githubUser}">
                     <a href="/publish">发布</a>
                 </li>

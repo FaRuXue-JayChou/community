@@ -31,7 +31,7 @@ public class HelloController {
                 if("token".equals(cookie.getName())){
                     GithubUser githubUser = githubUserMapper.findByToken(cookie.getValue());
                     if(0 != githubUser.getId())
-                        httpServletRequest.getSession().setAttribute("user", githubUser);
+                        httpServletRequest.getSession().setAttribute("githubUser", githubUser);
                     break;
                 }
             }
