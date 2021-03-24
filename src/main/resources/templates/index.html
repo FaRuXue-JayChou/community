@@ -33,17 +33,26 @@
             </form>
             <ul class="nav navbar-nav navbar-right">
                 <li th:if="${null == session.githubUser}"><a
-                        href="https://github.com/login/oauth/authorize?client_id=b8eeca538ba2ccd88770&redirect_uri=http://localhost:8080/callback&scope=githubUser&state=1">登录</a>
+                        href="https://github.com/login/oauth/authorize?client_id=b8eeca538ba2ccd88770&redirect_uri=http://localhost:8080/callback&scope=githubUser&state=1">Github登录</a>
                 </li>
                 <li th:if="${null == session.wechatUser}"><a
                         href="https://open.weixin.qq.com/connect/qrconnect?appid=   &redirect_uri=http://localhost:8080/wechatCallback&response_type=code&scope=snsapi_login&state=2">微信登录</a>
                 </li>
-                <li th:if="${null != session.githubUser}">
+                <li th:if="${null != session.githubUser || null != session.wechatUser}">
                     <a href="/publish">发布</a>
                 </li>
                 <li class="dropdown" th:if="${null != session.githubUser}">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false" th:text="${session.githubUser.getName()}"><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">个人中心</a></li>
+                        <li><a href="#">消息中心</a></li>
+                        <li><a href="#">退出登录</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown" th:if="${null != session.wechatUser}">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false" th:text="${session.wechatUser.getNickName()}"><span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="#">个人中心</a></li>
                         <li><a href="#">消息中心</a></li>
