@@ -52,6 +52,7 @@ public class WechatAuthorizeController {
             wechatUser.setGmtCreated(System.currentTimeMillis());
             wechatUser.setGmtModified(wechatUser.getGmtCreated());
             wechatUserMapper.create(wechatUser);
+            httpServletResponse.addCookie(new Cookie("type", "wechat"));
             httpServletResponse.addCookie(new Cookie("token", wechatUser.getToken()));
         }
         return "/";

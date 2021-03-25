@@ -56,6 +56,7 @@ public class GithubAuthorizeController {
             githubUser.setName(githubUserInfo.getName());
             githubUser.setToken(String.valueOf(UUID.randomUUID()));
             githubUserMapper.insert(githubUser);
+            httpServletResponse.addCookie(new Cookie("type", "github"));
             httpServletResponse.addCookie(new Cookie("token", githubUser.getToken()));
             return "redirect:/";
         }else{
