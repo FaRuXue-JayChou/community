@@ -6,14 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * @ClassName FrontEndInfoService
+ * @ClassName NavPropService
  * @Description TODO
  * @Author 90855
  * @Date 2021/3/26 15:46
  * @Version 1.0
  */
 @Service
-public class FrontEndInfoService {
+public class NavPropService {
 
     @Autowired
     private QuestionMapper questionMapper;
@@ -21,6 +21,10 @@ public class FrontEndInfoService {
     public NavPropDTO caculateConfig(Integer pageNum, Integer pageSize){
         Integer dataCount = getCount();
         Integer totalPageNum = getTotalPageNum(dataCount, pageSize);
+        if(1 > pageNum)
+            pageNum = 1;
+        if(pageNum > totalPageNum)
+            pageNum = totalPageNum;
         NavPropDTO navPropDTO = new NavPropDTO();
         navPropDTO.setDataCount(dataCount);
         navPropDTO.setPageNum(pageNum);

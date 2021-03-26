@@ -75,26 +75,26 @@
                         </div>
                     </div>
                 </div>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <li>
+                            <a href="/?pageNum=1" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li><a th:href="@{'/?pageNum=' + ${navPropDTO.pageNum - 2}}" th:style="'visibility:' + ${0 < navPropDTO.pageNum - 2 ? '' : 'hidden'}" th:text="${navPropDTO.pageNum - 2}"></a></li>
+                        <li><a th:href="@{'/?pageNum=' + ${navPropDTO.pageNum - 1}}" th:style="'visibility:' + ${0 < navPropDTO.pageNum - 1 ? '' : 'hidden'}" th:text="${navPropDTO.pageNum - 1}"></a></li>
+                        <li><a th:href="@{'/?pageNum=' + ${navPropDTO.pageNum - 0}}" th:text="${navPropDTO.pageNum}"></a></li>
+                        <li><a th:href="@{'/?pageNum=' + ${navPropDTO.pageNum + 1}}" th:style="'visibility:' + ${navPropDTO.totalPageNum + 1 > navPropDTO.pageNum + 1 ? '' : 'hidden'}" th:text="${navPropDTO.pageNum + 1}"></a></li>
+                        <li><a th:href="@{'/?pageNum=' + ${navPropDTO.pageNum + 2}}" th:style="'visibility:' + ${navPropDTO.totalPageNum + 1 > navPropDTO.pageNum + 2 ? '' : 'hidden'}" th:text="${navPropDTO.pageNum + 2}"></a></li>
+                        <li>
+                            <a th:href="@{'/?pageNum=' + ${navPropDTO.totalPageNum}}">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
-            <nav aria-label="Page navigation">
-                <ul class="pagination">
-                    <li>
-                        <a href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li><a href="#" th:if="${0 < navPropDTO.pageNum - 2}" th:text="${navPropDTO.pageNum - 2}"></a></li>
-                    <li><a href="#" th:if="${0 < navPropDTO.pageNum - 1}" th:text="${navPropDTO.pageNum - 1}"></a></li>
-                    <li><a href="#" th:text="${navPropDTO.pageNum}"></a></li>
-                    <li><a href="#" th:if="${navPropDTO.totalPageNum >= navPropDTO.pageNum + 1}" th:text="${navPropDTO.pageNum + 1}"></a></li>
-                    <li><a href="#" th:if="${navPropDTO.totalPageNum >= navPropDTO.pageNum + 2}" th:text="${navPropDTO.pageNum + 2}"></a></li>
-                    <li>
-                        <a href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
             <div class="col-xs-12 col-sm-12 col-lg-3">
                 <h2><span class="glyphicon glyphicon-paperclip"></span> 指南</h2>
                 <ul>

@@ -1,0 +1,1 @@
+ALTER TABLE USER RENAME TO GithubUser;
