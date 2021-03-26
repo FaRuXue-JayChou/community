@@ -28,8 +28,14 @@ public class QuestionService {
     @Autowired
     private QuestionMapper questionMapper;
 
-    public List<QuestionDTO> list(){
-        List<Question> questionList = questionMapper.selectAll();
+    public List<QuestionDTO> list(Integer pageNum, Integer pageSize){
+
+//        分页查询
+        List<Question> questionList = questionMapper.selectPointed((pageNum - 1) * pageSize, pageSize);
+
+//        查询所有
+//        List<Question> questionList = questionMapper.selectAll();
+
         List<QuestionDTO> questionDTOList = new ArrayList<>();
         for(Question question: questionList){
             QuestionDTO questionDTO = new QuestionDTO();
