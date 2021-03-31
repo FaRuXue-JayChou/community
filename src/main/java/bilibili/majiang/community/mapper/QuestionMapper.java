@@ -37,4 +37,6 @@ public interface QuestionMapper {
     @Select("select * from question where creator = #{creator} limit #{start}, #{offset}")
     List<Question> selectPointedByUser(@Param("creator") Integer creator, @Param("start") Integer start, @Param("offset") Integer offset);
 
+    @Select("select * from QUESTION where Id = #{id}")
+    Question findById(@Param("id") Integer id);
 }

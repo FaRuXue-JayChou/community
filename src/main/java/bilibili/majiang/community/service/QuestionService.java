@@ -61,4 +61,12 @@ public class QuestionService {
         return questionDTOList;
     }
 
+    public QuestionDTO findById(Integer id) {
+        Question question = questionMapper.findById(id);
+        GithubUser githubUser = githubUserMapper.findById(question.getCreator());
+        QuestionDTO questionDTO = new QuestionDTO();
+        BeanUtils.copyProperties(question, questionDTO);
+        questionDTO.setGithubUser(githubUser);
+        return questionDTO;
+    }
 }

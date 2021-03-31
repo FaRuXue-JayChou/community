@@ -59,10 +59,10 @@ public class PublishController {
         question.setGmtCreated(System.currentTimeMillis());
         question.setGmtModified(question.getGmtCreated());
         //通过 session 获取用户属性
-        GithubUser githubUser = (GithubUser)httpServletRequest.getSession().getAttribute("githubUser");
+        GithubUser githubUser = (GithubUser)httpServletRequest.getSession().getAttribute("user");
         question.setCreator(githubUser.getId());
         questionMapper.create(question);
-        return "index";
+        return "redirect:/";
     }
 
 }

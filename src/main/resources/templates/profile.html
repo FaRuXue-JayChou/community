@@ -26,17 +26,21 @@
                 <div class="media" th:each="questionDTO: ${questionDTOList}">
                     <div class="media-left">
                         <a href="#">
-                            <img class="media-object img-avatarUrl img-rounded" th:src="${questionDTO.githubUser.avatarUrl}" alt="头像">
+                            <img class="media-object img-avatarUrl img-rounded"
+                                 th:src="${questionDTO.githubUser.avatarUrl}" alt="头像">
                         </a>
                     </div>
                     <div class="media-body">
-                        <h4 class="media-heading" th:text="${questionDTO.title}">Media heading</h4>
-                        <span th:text="${questionDTO.description}">Media description</span>
+                        <a th:href="@{'/question/' + ${questionDTO.id}}">
+                            <h4 class="media-heading" th:text="${questionDTO.title}">Media heading</h4>
+                            <span th:text="${questionDTO.description}">Media description</span>
+                        </a>
                         <div class="publishment-props">
                             <span class="text-info" th:text="${questionDTO.likeCount}"></span> 点赞
                             <span class="text-info" th:text="${questionDTO.commentCount}"></span> 评论
                             <span class="text-info" th:text="${questionDTO.viewCount}"></span> 查看
-                            <span class="text-info" th:text="${#dates.format(questionDTO.gmtCreated, 'yy-MM-dd hh:mm')}"></span> 发布
+                            <span class="text-info"
+                                  th:text="${#dates.format(questionDTO.gmtCreated, 'yy-MM-dd hh:mm')}"></span> 发布
                         </div>
                     </div>
                 </div>
@@ -47,11 +51,20 @@
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
-                        <li><a th:href="@{'/profile/' + ${section} + '?pageNum=' + ${navPropDTO.pageNum - 2}}" th:style="'visibility:' + ${0 < navPropDTO.pageNum - 2 ? '' : 'hidden'}" th:text="${navPropDTO.pageNum - 2}"></a></li>
-                        <li><a th:href="@{'/profile/' + ${section} + '?pageNum=' + ${navPropDTO.pageNum - 1}}" th:style="'visibility:' + ${0 < navPropDTO.pageNum - 1 ? '' : 'hidden'}" th:text="${navPropDTO.pageNum - 1}"></a></li>
-                        <li><a th:href="@{'/profile/' + ${section} + '?pageNum=' + ${navPropDTO.pageNum - 0}}" th:text="${navPropDTO.pageNum}"></a></li>
-                        <li><a th:href="@{'/profile/' + ${section} + '?pageNum=' + ${navPropDTO.pageNum + 1}}" th:style="'visibility:' + ${navPropDTO.totalPageNum + 1 > navPropDTO.pageNum + 1 ? '' : 'hidden'}" th:text="${navPropDTO.pageNum + 1}"></a></li>
-                        <li><a th:href="@{'/profile/' + ${section} + '?pageNum=' + ${navPropDTO.pageNum + 2}}" th:style="'visibility:' + ${navPropDTO.totalPageNum + 1 > navPropDTO.pageNum + 2 ? '' : 'hidden'}" th:text="${navPropDTO.pageNum + 2}"></a></li>
+                        <li><a th:href="@{'/profile/' + ${section} + '?pageNum=' + ${navPropDTO.pageNum - 2}}"
+                               th:style="'visibility:' + ${0 < navPropDTO.pageNum - 2 ? '' : 'hidden'}"
+                               th:text="${navPropDTO.pageNum - 2}"></a></li>
+                        <li><a th:href="@{'/profile/' + ${section} + '?pageNum=' + ${navPropDTO.pageNum - 1}}"
+                               th:style="'visibility:' + ${0 < navPropDTO.pageNum - 1 ? '' : 'hidden'}"
+                               th:text="${navPropDTO.pageNum - 1}"></a></li>
+                        <li><a th:href="@{'/profile/' + ${section} + '?pageNum=' + ${navPropDTO.pageNum - 0}}"
+                               th:text="${navPropDTO.pageNum}"></a></li>
+                        <li><a th:href="@{'/profile/' + ${section} + '?pageNum=' + ${navPropDTO.pageNum + 1}}"
+                               th:style="'visibility:' + ${navPropDTO.totalPageNum + 1 > navPropDTO.pageNum + 1 ? '' : 'hidden'}"
+                               th:text="${navPropDTO.pageNum + 1}"></a></li>
+                        <li><a th:href="@{'/profile/' + ${section} + '?pageNum=' + ${navPropDTO.pageNum + 2}}"
+                               th:style="'visibility:' + ${navPropDTO.totalPageNum + 1 > navPropDTO.pageNum + 2 ? '' : 'hidden'}"
+                               th:text="${navPropDTO.pageNum + 2}"></a></li>
                         <li>
                             <a th:href="@{'/profile/' + ${section} + '?pageNum=' + ${navPropDTO.totalPageNum}}">
                                 <span aria-hidden="true">&raquo;</span>
@@ -62,8 +75,10 @@
             </div>
             <div class="col-xs-12 col-sm-12 col-lg-3">
                 <div class="list-group">
-                    <a href="/profile/questions" th:class="${'questions' == section}? 'list-group-item active' : 'list-group-item'">我提问的</a>
-                    <a href="/profile/replies" th:class="${'replies' == section}? 'list-group-item active' : 'list-group-item'">回复我的</a>
+                    <a href="/profile/questions"
+                       th:class="${'questions' == section}? 'list-group-item active' : 'list-group-item'">我提问的</a>
+                    <a href="/profile/replies"
+                       th:class="${'replies' == section}? 'list-group-item active' : 'list-group-item'">回复我的</a>
                 </div>
             </div>
         </div>
