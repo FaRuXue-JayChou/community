@@ -69,4 +69,17 @@ public class QuestionService {
         questionDTO.setGithubUser(githubUser);
         return questionDTO;
     }
+
+    public void createOrUpdate(Question question, Integer id){
+        if(0 != id){
+            question.setGmtModified(System.currentTimeMillis());
+            question.setId(id);
+            questionMapper.update(question);
+        }
+        else{
+            question.setGmtCreated(System.currentTimeMillis());
+            question.setGmtModified(question.getGmtCreated());
+            questionMapper.create(question);
+        }
+    }
 }

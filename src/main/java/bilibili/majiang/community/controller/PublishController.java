@@ -1,12 +1,15 @@
 package bilibili.majiang.community.controller;
 
+import bilibili.majiang.community.dto.QuestionDTO;
 import bilibili.majiang.community.mapper.QuestionMapper;
 import bilibili.majiang.community.model.Question;
 import bilibili.majiang.community.model.GithubUser;
+import bilibili.majiang.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -25,6 +28,9 @@ public class PublishController {
     @Autowired
     private QuestionMapper questionMapper;
 
+    @Autowired
+    private QuestionService questionService;
+
     @GetMapping("/publish")
     public String publish(){
         return "publish";
@@ -35,7 +41,8 @@ public class PublishController {
                             @RequestParam(name = "description") String description,
                             @RequestParam(name = "tag") String tag,
                             Model model,
-                            HttpServletRequest httpServletRequest){
+                            HttpServletRequest httpServletRequest,
+                            @RequestParam(name = "id", defaultValue = "0") Integer id){
         Question question = new Question();
         question.setTitle(title);
         question.setDescription(description);
@@ -56,13 +63,22 @@ public class PublishController {
             model.addAttribute("error", "标签不能为空");
             return "publish";
         }
-        question.setGmtCreated(System.currentTimeMillis());
-        question.setGmtModified(question.getGmtCreated());
         //通过 session 获取用户属性
         GithubUser githubUser = (GithubUser)httpServletRequest.getSession().getAttribute("user");
         question.setCreator(githubUser.getId());
-        questionMapper.create(question);
+        questionService.createOrUpdate(question, id);
         return "redirect:/";
+    }
+
+    @GetMapping("/publish/{id}")
+    public String edit(@PathVariable(name = "id") Integer id,
+                       Model model){
+        QuestionDTO questionDTO = questionService.findById(id);
+        model.addAttribute("title", questionDTO.getTitle());
+        model.addAttribute("description", questionDTO.getDescription());
+        model.addAttribute("tag", questionDTO.getTag());
+        model.addAttribute("id", questionDTO.getId());
+        return "publish";
     }
 
 }
