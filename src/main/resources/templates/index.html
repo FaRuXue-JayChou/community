@@ -30,8 +30,10 @@
                         </a>
                     </div>
                     <div class="media-body">
-                        <h4 class="media-heading" th:text="${questionDTO.title}">Media heading</h4>
-                        <span th:text="${questionDTO.description}">Media description</span>
+                        <a th:href="@{'/question/' + ${questionDTO.id}}">
+                            <h4 class="media-heading" th:text="${questionDTO.title}">Media heading</h4>
+                            <span th:text="${questionDTO.description}">Media description</span>
+                        </a>
                         <div class="publishment-props">
                         <span class="text-info" th:text="${questionDTO.likeCount}"></span> 点赞
                         <span class="text-info" th:text="${questionDTO.commentCount}"></span> 评论

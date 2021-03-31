@@ -1,10 +1,7 @@
 package bilibili.majiang.community.mapper;
 
 import bilibili.majiang.community.model.GithubUser;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 /**
  * @InterfaceName GithubUserMapper
@@ -27,12 +24,17 @@ public interface GithubUserMapper {
     @Select("select count(*) from githubUser where ACCOUNT_ID = #{accountId}")
     Integer findByAccountId(@Param("accountId") Long accountId);
 
-    @Select("select * from githubUser where id = #{id}")
+    @Select("select * from GithubUser where id = #{id}")
     GithubUser findById(@Param("id") Integer id);
 
-    @Select("select token from githubUser " +
+    @Select("select token from GithubUser " +
             "where ACCOUNT_ID = #{accountId} " +
             "order by ACCOUNT_ID limit 1")
     String getToken(@Param("accountId") String accountId);
+
+    @Update("update GithubUser " +
+            "set name = #{name}, gmt_modified = #{gmtModified}, avatar_url = #{avatarUrl} " +
+            "where account_id = #{accountId}")
+    int update(GithubUser githubUser);
 
 }

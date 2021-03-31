@@ -5,6 +5,7 @@ import bilibili.majiang.community.dto.GithubUserInfo;
 import bilibili.majiang.community.mapper.GithubUserMapper;
 import bilibili.majiang.community.model.GithubUser;
 import bilibili.majiang.community.provider.GithubProvider;
+import bilibili.majiang.community.service.GithubUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,9 @@ public class GithubAuthorizeController {
 
     @Autowired
     private GithubUserMapper githubUserMapper;
+
+    @Autowired
+    private GithubUserService githubUserService;
 
     @Value("${github.client.id}")
     private String client_id;
@@ -48,21 +52,8 @@ public class GithubAuthorizeController {
         //使用返回的 access_token 获取 用户信息
         GithubUserInfo githubUserInfo = githubProvider.getGithubUser(tokenString);
         if(null != githubUserInfo && 0 != githubUserInfo.getId()){
-            if(0 != githubUserMapper.findByAccountId(githubUserInfo.getId())
-                    && null == httpServletRequest.getCookies()) {
-                Cookie cookie = new Cookie("token", githubUserMapper.getToken(String.valueOf(githubUserInfo.getId())));
-                httpServletResponse.addCookie(cookie);
-                return "redirect:/";
-            }
-            GithubUser githubUser = new GithubUser();
-            githubUser.setAccountId(String.valueOf(githubUserInfo.getId()));
-            githubUser.setAvatarUrl(githubUserInfo.getAvatarUrl());
-            githubUser.setGmtCreated(System.currentTimeMillis());
-            githubUser.setGmtModified(githubUser.getGmtCreated());
-            githubUser.setName(githubUserInfo.getName());
-            githubUser.setToken(String.valueOf(UUID.randomUUID()));
-            githubUserMapper.insert(githubUser);
-            httpServletResponse.addCookie(new Cookie("token", githubUser.getToken()));
+            String token = githubUserService.createOrUpdate(githubUserInfo);
+            httpServletResponse.addCookie(new Cookie("token", token));
             return "redirect:/";
         }else{
             return "redirect:/";
