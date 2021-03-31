@@ -57,7 +57,7 @@
                         <li><a th:href="@{'/profile/' + ${section} + '?pageNum=' + ${navPropDTO.pageNum - 1}}"
                                th:style="'visibility:' + ${0 < navPropDTO.pageNum - 1 ? '' : 'hidden'}"
                                th:text="${navPropDTO.pageNum - 1}"></a></li>
-                        <li><a th:href="@{'/profile/' + ${section} + '?pageNum=' + ${navPropDTO.pageNum - 0}}"
+                        <li class="active"><a th:href="@{'/profile/' + ${section} + '?pageNum=' + ${navPropDTO.pageNum - 0}}"
                                th:text="${navPropDTO.pageNum}"></a></li>
                         <li><a th:href="@{'/profile/' + ${section} + '?pageNum=' + ${navPropDTO.pageNum + 1}}"
                                th:style="'visibility:' + ${navPropDTO.totalPageNum + 1 > navPropDTO.pageNum + 1 ? '' : 'hidden'}"
