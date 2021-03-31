@@ -31,4 +31,10 @@ public interface QuestionMapper {
     @Select("select * from question limit #{start}, #{offset}")
     List<Question> selectPointed(@Param("start") Integer start, @Param("offset") Integer offset);
 
+    @Select("select count(1) from question where creator = #{creator}")
+    Integer getCountByUser(@Param("creator") Integer creator);
+
+    @Select("select * from question where creator = #{creator} limit #{start}, #{offset}")
+    List<Question> selectPointedByUser(@Param("creator") Integer creator, @Param("start") Integer start, @Param("offset") Integer offset);
+
 }

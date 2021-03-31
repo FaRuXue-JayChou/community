@@ -7,6 +7,7 @@ import bilibili.majiang.community.model.Question;
 import bilibili.majiang.community.model.GithubUser;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -41,6 +42,19 @@ public class QuestionService {
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question, questionDTO);
             GithubUser githubUser = githubUserMapper.findById(question.getCreator());
+            questionDTO.setGithubUser(githubUser);
+            questionDTOList.add(questionDTO);
+        }
+        return questionDTOList;
+    }
+
+    public List<QuestionDTO> listByUser(GithubUser githubUser, Integer pageNum, Integer pageSize){
+        List<Question> questionList = questionMapper.selectPointedByUser(githubUser.getId(), (pageNum - 1) * pageSize, pageSize);
+
+        List<QuestionDTO> questionDTOList = new ArrayList<>();
+        for(Question question: questionList){
+            QuestionDTO questionDTO = new QuestionDTO();
+            BeanUtils.copyProperties(question, questionDTO);
             questionDTO.setGithubUser(githubUser);
             questionDTOList.add(questionDTO);
         }

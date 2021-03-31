@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
@@ -34,6 +35,7 @@ public class GithubAuthorizeController {
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,
                            @RequestParam(name = "state") String state,
+                           HttpServletRequest httpServletRequest,
                            HttpServletResponse httpServletResponse){
         ForGithubToken forGithubToken = new ForGithubToken();
         forGithubToken.setClient_id(client_id);
@@ -45,9 +47,13 @@ public class GithubAuthorizeController {
         String tokenString = githubProvider.getAccessToken(forGithubToken);
         //使用返回的 access_token 获取 用户信息
         GithubUserInfo githubUserInfo = githubProvider.getGithubUser(tokenString);
-        if(0 != githubUserInfo.getId()){
-            if(0 != githubUserMapper.findByAccountId(githubUserInfo.getId()))
-                return "/";
+        if(null != githubUserInfo && 0 != githubUserInfo.getId()){
+            if(0 != githubUserMapper.findByAccountId(githubUserInfo.getId())
+                    && null == httpServletRequest.getCookies()) {
+                Cookie cookie = new Cookie("token", githubUserMapper.getToken(String.valueOf(githubUserInfo.getId())));
+                httpServletResponse.addCookie(cookie);
+                return "redirect:/";
+            }
             GithubUser githubUser = new GithubUser();
             githubUser.setAccountId(String.valueOf(githubUserInfo.getId()));
             githubUser.setAvatarUrl(githubUserInfo.getAvatarUrl());

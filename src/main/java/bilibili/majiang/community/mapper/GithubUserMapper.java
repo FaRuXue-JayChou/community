@@ -30,4 +30,9 @@ public interface GithubUserMapper {
     @Select("select * from githubUser where id = #{id}")
     GithubUser findById(@Param("id") Integer id);
 
+    @Select("select token from githubUser " +
+            "where ACCOUNT_ID = #{accountId} " +
+            "order by ACCOUNT_ID limit 1")
+    String getToken(@Param("accountId") String accountId);
+
 }
