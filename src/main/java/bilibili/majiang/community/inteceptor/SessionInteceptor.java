@@ -2,6 +2,7 @@ package bilibili.majiang.community.inteceptor;
 
 import bilibili.majiang.community.mapper.GithubUserMapper;
 import bilibili.majiang.community.model.GithubUser;
+import bilibili.majiang.community.model.GithubUserExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
@@ -31,7 +32,9 @@ public class SessionInteceptor implements HandlerInterceptor {
         if(null != cookies && 0 < cookies.length){
             for(Cookie cookie: cookies){
                 if("token".equals(cookie.getName())){
-                    GithubUser githubUser = githubUserMapper.findByToken(cookie.getValue());
+                    GithubUserExample githubUserExample = new GithubUserExample();
+                    githubUserExample.createCriteria().andTokenEqualTo(cookie.getValue());
+                    GithubUser githubUser = githubUserMapper.selectByExample(githubUserExample).get(0);
                     if(0 != githubUser.getId())
                         request.getSession().setAttribute("user", githubUser);
                     break;

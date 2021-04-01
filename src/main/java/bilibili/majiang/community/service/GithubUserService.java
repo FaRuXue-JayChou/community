@@ -3,9 +3,11 @@ package bilibili.majiang.community.service;
 import bilibili.majiang.community.dto.GithubUserInfo;
 import bilibili.majiang.community.mapper.GithubUserMapper;
 import bilibili.majiang.community.model.GithubUser;
+import bilibili.majiang.community.model.GithubUserExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -24,13 +26,17 @@ public class GithubUserService {
     public String createOrUpdate(GithubUserInfo githubUserInfo) {
         String token;
         GithubUser githubUser = new GithubUser();
-        if (0 != githubUserMapper.findByAccountId(githubUserInfo.getId())){
+
+        GithubUserExample githubUserExample= new GithubUserExample();
+        githubUserExample.createCriteria().andAccountIdEqualTo(String.valueOf(githubUserInfo.getId()));
+        List<GithubUser> githubUserList = githubUserMapper.selectByExample(githubUserExample);
+        if (0 != githubUserList.size()){
             githubUser.setAvatarUrl(githubUserInfo.getAvatarUrl());
             githubUser.setGmtModified(System.currentTimeMillis());
             githubUser.setName(githubUserInfo.getName());
             githubUser.setAccountId(String.valueOf(githubUserInfo.getId()));
-            githubUserMapper.update(githubUser);
-            token = githubUserMapper.getToken(String.valueOf(githubUserInfo.getId()));
+            githubUserMapper.updateByExampleSelective(githubUser, new GithubUserExample());
+            token = githubUserMapper.selectByPrimaryKey(githubUserList.get(0).getId()).getToken();
         }
         else{
             githubUser.setAccountId(String.valueOf(githubUserInfo.getId()));

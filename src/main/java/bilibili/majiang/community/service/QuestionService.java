@@ -3,6 +3,7 @@ package bilibili.majiang.community.service;
 import bilibili.majiang.community.dto.QuestionDTO;
 import bilibili.majiang.community.mapper.QuestionMapper;
 import bilibili.majiang.community.mapper.GithubUserMapper;
+import bilibili.majiang.community.model.GithubUserExample;
 import bilibili.majiang.community.model.Question;
 import bilibili.majiang.community.model.GithubUser;
 import org.springframework.beans.BeanUtils;
@@ -41,8 +42,10 @@ public class QuestionService {
         for(Question question: questionList){
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question, questionDTO);
-            GithubUser githubUser = githubUserMapper.findById(question.getCreator());
-            questionDTO.setGithubUser(githubUser);
+            GithubUserExample githubUserExample = new GithubUserExample();
+            githubUserExample.createCriteria().andIdEqualTo(question.getCreator());
+            List<GithubUser> githubUserList = githubUserMapper.selectByExample(githubUserExample);
+            questionDTO.setGithubUser(githubUserList.get(0));
             questionDTOList.add(questionDTO);
         }
         return questionDTOList;
@@ -63,10 +66,12 @@ public class QuestionService {
 
     public QuestionDTO findById(Integer id) {
         Question question = questionMapper.findById(id);
-        GithubUser githubUser = githubUserMapper.findById(question.getCreator());
+        GithubUserExample githubUserExample = new GithubUserExample();
+        githubUserExample.createCriteria().andIdEqualTo(question.getCreator());
+        List<GithubUser> githubUserList = githubUserMapper.selectByExample(githubUserExample);
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question, questionDTO);
-        questionDTO.setGithubUser(githubUser);
+        questionDTO.setGithubUser(githubUserList.get(0));
         return questionDTO;
     }
 

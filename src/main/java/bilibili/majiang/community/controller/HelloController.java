@@ -18,9 +18,6 @@ import java.util.List;
 public class HelloController {
 
     @Autowired
-    private GithubUserMapper githubUserMapper;
-
-    @Autowired
     private QuestionService questionService;
 
     @Autowired
