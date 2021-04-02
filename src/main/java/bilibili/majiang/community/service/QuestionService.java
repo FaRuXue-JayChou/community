@@ -6,6 +6,8 @@ import bilibili.majiang.community.mapper.GithubUserMapper;
 import bilibili.majiang.community.model.GithubUserExample;
 import bilibili.majiang.community.model.Question;
 import bilibili.majiang.community.model.GithubUser;
+import bilibili.majiang.community.model.QuestionExample;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
@@ -33,7 +35,7 @@ public class QuestionService {
     public List<QuestionDTO> list(Integer pageNum, Integer pageSize){
 
 //        分页查询
-        List<Question> questionList = questionMapper.selectPointed((pageNum - 1) * pageSize, pageSize);
+        List<Question> questionList = questionMapper.selectByExampleWithBLOBsWithRowbounds(new QuestionExample(), new RowBounds((pageNum - 1) * pageSize, pageSize));
 
 //        查询所有
 //        List<Question> questionList = questionMapper.selectAll();
@@ -52,7 +54,9 @@ public class QuestionService {
     }
 
     public List<QuestionDTO> listByUser(GithubUser githubUser, Integer pageNum, Integer pageSize){
-        List<Question> questionList = questionMapper.selectPointedByUser(githubUser.getId(), (pageNum - 1) * pageSize, pageSize);
+        QuestionExample questionExample = new QuestionExample();
+        questionExample.createCriteria().andCreatorEqualTo(githubUser.getId());
+        List<Question> questionList = questionMapper.selectByExampleWithBLOBsWithRowbounds(questionExample, new RowBounds((pageNum - 1) * pageSize, pageSize));
 
         List<QuestionDTO> questionDTOList = new ArrayList<>();
         for(Question question: questionList){
@@ -65,7 +69,9 @@ public class QuestionService {
     }
 
     public QuestionDTO findById(Integer id) {
-        Question question = questionMapper.findById(id);
+        QuestionExample questionExample = new QuestionExample();
+        questionExample.createCriteria().andIdEqualTo(id);
+        Question question = questionMapper.selectByExampleWithBLOBs(questionExample).get(0);
         GithubUserExample githubUserExample = new GithubUserExample();
         githubUserExample.createCriteria().andIdEqualTo(question.getCreator());
         List<GithubUser> githubUserList = githubUserMapper.selectByExample(githubUserExample);
@@ -79,12 +85,13 @@ public class QuestionService {
         if(0 != id){
             question.setGmtModified(System.currentTimeMillis());
             question.setId(id);
-            questionMapper.update(question);
+            QuestionExample questionExample = new QuestionExample();
+            questionMapper.updateByExampleSelective(question, questionExample);
         }
         else{
             question.setGmtCreated(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreated());
-            questionMapper.create(question);
+            questionMapper.insert(question);
         }
     }
 }

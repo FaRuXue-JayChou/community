@@ -3,6 +3,7 @@ package bilibili.majiang.community.service;
 import bilibili.majiang.community.dto.NavPropDTO;
 import bilibili.majiang.community.mapper.QuestionMapper;
 import bilibili.majiang.community.model.GithubUser;
+import bilibili.majiang.community.model.QuestionExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +35,7 @@ public class NavPropService {
     }
 
     private Integer getCount(){
-        return questionMapper.getCount();
+        return (int)questionMapper.countByExample(new QuestionExample());
     }
 
     private Integer getTotalPageNum(Integer dataCount, Integer pageSize){
@@ -59,7 +60,9 @@ public class NavPropService {
     }
 
     private Integer getCountByUser(GithubUser githubUser){
-        return questionMapper.getCountByUser(githubUser.getId());
+        QuestionExample questionExample = new QuestionExample();
+        questionExample.createCriteria().andCreatorEqualTo(githubUser.getId());
+        return (int)questionMapper.countByExample(questionExample);
     }
 
 }
