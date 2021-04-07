@@ -1,6 +1,7 @@
 package bilibili.majiang.community.service;
 
 import bilibili.majiang.community.dto.QuestionDTO;
+import bilibili.majiang.community.mapper.QuestionExtMapper;
 import bilibili.majiang.community.mapper.QuestionMapper;
 import bilibili.majiang.community.mapper.GithubUserMapper;
 import bilibili.majiang.community.model.GithubUserExample;
@@ -31,6 +32,9 @@ public class QuestionService {
 
     @Autowired
     private QuestionMapper questionMapper;
+
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
 
     public List<QuestionDTO> list(Integer pageNum, Integer pageSize){
 
@@ -94,4 +98,9 @@ public class QuestionService {
             questionMapper.insert(question);
         }
     }
+
+    public int increaseViewCount(Integer id){
+        return questionExtMapper.increaseViewCount(id);
+    }
+
 }
